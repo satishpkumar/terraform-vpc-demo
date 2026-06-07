@@ -61,15 +61,15 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_instance" "web" {
 
-  ami                    = "ami-0685bcc683dadb6b9"
+  ami = "ami-0685bcc683dadb6b9"
 
-  instance_type          = "t2.micro"
+  instance_type = "t3.micro"
 
-  subnet_id              = aws_subnet.public.id
+  subnet_id = aws_subnet.public.id
 
   associate_public_ip_address = true
 
-vpc_security_group_ids = [
+  vpc_security_group_ids = [
     aws_security_group.web_sg.id
   ]
 
@@ -81,19 +81,19 @@ vpc_security_group_ids = [
 
 resource "aws_security_group" "web_sg" {
 
-  name        = "web-sg"
+  name = "web-sg"
 
   description = "Allow SSH"
 
-  vpc_id      = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
 
   ingress {
 
-    from_port   = 22
+    from_port = 22
 
-    to_port     = 22
+    to_port = 22
 
-    protocol    = "tcp"
+    protocol = "tcp"
 
     cidr_blocks = ["0.0.0.0/0"]
 
@@ -101,11 +101,11 @@ resource "aws_security_group" "web_sg" {
 
   egress {
 
-    from_port   = 0
+    from_port = 0
 
-    to_port     = 0
+    to_port = 0
 
-    protocol    = "-1"
+    protocol = "-1"
 
     cidr_blocks = ["0.0.0.0/0"]
 
