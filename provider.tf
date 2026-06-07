@@ -1,4 +1,4 @@
-provider "aws_provider"{
+provider "aws"{
 
 region = "ap-south-1"
 
