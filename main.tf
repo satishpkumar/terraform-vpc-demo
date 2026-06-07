@@ -1,24 +1,52 @@
-resource "aws_vpc" "main"{
+resource "aws_vpc" "main" {
 
-cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/16"
 
-tags = {
-Name  = "main VPC"
-Description = "The Primary VPC"
+  tags = {
+    Name        = "main VPC"
+    Description = "The Primary VPC"
+
+  }
 
 }
 
+resource "aws_subnet" "public" {
+
+
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "ap-south-1a"
+
+  tags = {
+    Name        = "public subnet 1a"
+    Description = "Public subnet under main VPC"
+  }
 }
 
-resource "aws_subnet" "public"{
+resource "aws_internet_gateway" "igw" {
 
+  vpc_id = aws_vpc.main.id
 
-vpc_id      = aws_vpc.main.id
-cidr_block ="10.0.1.0/24"
-availability_zone = "ap-south-1a"
+  tags = {
+    Name = "terraform-igw"
+  }
 
-tags={
-Name = "public subnet 1a"
-Description = "Public subnet under main VPC"
 }
+
+resource "aws_route_table" "public" {
+
+  vpc_id = aws_vpc.main.id
+
+  route {
+
+    cidr_block = "0.0.0.0/0"
+
+    gateway_id = aws_internet_gateway.igw.id
+
+  }
+
+  tags = {
+    Name = "public-route-table"
+  }
+
 }
