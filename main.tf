@@ -69,6 +69,10 @@ resource "aws_instance" "web" {
 
   associate_public_ip_address = true
 
+vpc_security_group_ids = [
+    aws_security_group.web_sg.id
+  ]
+
   tags = {
     Name = "terraform-vpc-demo-ec2"
   }
